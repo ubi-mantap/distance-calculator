@@ -1,0 +1,5 @@
+{
+	"ImportPath": "github.com/rvu95/distance-calculator",
+	"GoVersion": "go1.5.2",
+	"Deps": []
+}
