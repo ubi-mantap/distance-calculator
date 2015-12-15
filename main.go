@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 )
 
 /**
@@ -11,9 +12,15 @@ import (
  */
 func main() {
 
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		port = "8082"
+	}
+
 	http.HandleFunc("/", Compute)
-	fmt.Println("listening...")
-	err := http.ListenAndServe(":8082", nil)
+	fmt.Println("listening at " + port + "...")
+	err := http.ListenAndServe(":" + port, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
