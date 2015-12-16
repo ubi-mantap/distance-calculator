@@ -8,7 +8,7 @@ import (
 )
 
 /**
-* curl -X POST -H "Content-Type: application/json" -d '{ "array":[ {"X":1, "Y":4},{"X":1, "Y":4}]}' http://127.0.0.1:8082/
+* curl -X POST -H "Content-Type: application/json" -d '{"current":{"X":0,"Y":0},"previous":[ {"X":1, "Y":4},{"X":1, "Y":4}]}' http://127.0.0.1:8082/
  */
 func main() {
 
@@ -20,7 +20,7 @@ func main() {
 
 	http.HandleFunc("/", Compute)
 	fmt.Println("listening at " + port + "...")
-	err := http.ListenAndServe(":" + port, nil)
+	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		log.Fatal(err)
 	}

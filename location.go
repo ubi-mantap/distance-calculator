@@ -5,5 +5,14 @@ type Location struct {
 }
 
 type PreviousLocations struct {
-	Previous []Location `json:"array"`
+	Previous []Location `json:"previous"`
+}
+
+type UserRequest struct {
+	Curr Location   `json:"current"`
+	Prev []Location `json:"previous"`
+}
+
+type Distance struct {
+	CurrDistance float64
 }
