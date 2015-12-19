@@ -8,7 +8,7 @@ import (
 )
 
 /**
-* curl -X POST -H "Content-Type: application/json" -d '{"current":{"X":0,"Y":0},"previous":[ {"X":1, "Y":4},{"X":1, "Y":4}]}' http://127.0.0.1:8082/
+* curl -X POST -H "Content-Type: application/json" -d '{"current":{"Lat":-0.626466,"Lon":100.1158333},"previous":[ {"Lat":-7.8981666, "Lon":110.2226681},{"Lat":-6.9034443, "Lon":107.5731165},{"Lat":-0.3027606, "Lon":100.3544704}]}' http://127.0.0.1:8082/
  */
 func main() {
 

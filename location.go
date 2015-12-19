@@ -1,7 +1,7 @@
 package main
 
 type Location struct {
-	X, Y float64
+	Lat, Lon float64
 }
 
 type UserRequest struct {

@@ -8,9 +8,6 @@ import (
 
 func Compute(res http.ResponseWriter, req *http.Request) {
 	var msg UserRequest
-	var totX float64
-	var totY float64
-	var tot float64
 
 	decodeJson := json.NewDecoder(req.Body)
 	err := decodeJson.Decode(&msg)
@@ -22,17 +19,11 @@ func Compute(res http.ResponseWriter, req *http.Request) {
 	prevs := msg.Prev
 	currLoc := msg.Curr
 
-	for i := range prevs {
-		totX += prevs[i].X
-		totY += prevs[i].Y
-		tot += 1.0
-	}
+	curr := MidPoint(prevs)
+	latMid := curr.Lat
+	lonMid := curr.Lon
 
-	curr := MidPoint(totX, totY, tot)
-	xMid := curr.X
-	yMid := curr.Y
-
-	currDist := CurrentDistance(xMid, yMid, currLoc.X, currLoc.Y)
+	currDist := Hervesine(latMid, lonMid, currLoc.Lat, currLoc.Lon)
 
 	res.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	res.WriteHeader(http.StatusCreated)
