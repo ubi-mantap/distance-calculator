@@ -41,8 +41,8 @@ func Hervesine(lat1 float64, lat2 float64, lon1 float64, lon2 float64) Distance 
 
 	earthRad := 6371.0
 
-	dLat = DegToRad(math.Abs(lat1 - lat2))
-	dLon = DegToRad(math.Abs(lon1 - lon2))
+	dLat = DegToRad(lat1 - lat2)
+	dLon = DegToRad(lon1 - lon2)
 	a = math.Sin(dLat/2)*math.Sin(dLat/2) + math.Cos(DegToRad(lat1))*math.Cos(DegToRad(lat2))*math.Sin(dLon/2)*math.Sin(dLon/2)
 	c = 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
 	d = earthRad * c
