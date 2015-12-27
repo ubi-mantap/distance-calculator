@@ -21,9 +21,9 @@ func RadToDeg(lat, lon float64) Location {
 }
 
 // return Hervesine distance in km
-func HaversineDist(p1, p2 Location) float64 {
-	return 2 * rEarth * math.Asin(math.Sqrt(Haversine(p2.Lat-p1.Lat)+
-		math.Cos(p1.Lat)*math.Cos(p2.Lat)*Haversine(p2.Lon-p1.Lon)))
+func HaversineDist(p1, p2 Location) Distance {
+	return Distance{2 * rEarth * math.Asin(math.Sqrt(Haversine(p2.Lat-p1.Lat)+
+		math.Cos(p1.Lat)*math.Cos(p2.Lat)*Haversine(p2.Lon-p1.Lon)))}
 }
 
 func MidPoint(prevs []Location) Location {
