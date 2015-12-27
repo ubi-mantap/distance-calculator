@@ -6,6 +6,8 @@ import (
 	"net/http"
 )
 
+// curl -X POST -H "Content-Type: application/json" -d '{"current":{"Lat":36.12,"Lon":86.67},"previous":[{"Lat":36.12, "Lon":86.67},{"Lat":36.12, "Lon":86.67}]}' http://127.0.0.1:8082/
+
 func Compute(res http.ResponseWriter, req *http.Request) {
 	var msg UserRequest
 
@@ -16,15 +18,11 @@ func Compute(res http.ResponseWriter, req *http.Request) {
 		panic(err)
 	}
 
-	prevs := msg.Prev
 	currLoc := msg.Curr
+	prevLoc := msg.Prev
 
-	curr := MidPoint(prevs)
-	latMid := curr.Lat
-	lonMid := curr.Lon
-
-	currDist := Hervesine(latMid, lonMid, currLoc.Lat, currLoc.Lon)
-
+	mid := MidPoint(prevLoc)
+	currDist := HaversineDist(DegToRad(mid.Lat, mid.Lon), DegToRad(currLoc.Lat, currLoc.Lon))
 	res.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	res.WriteHeader(http.StatusCreated)
 	if err := json.NewEncoder(res).Encode(currDist); err != nil {

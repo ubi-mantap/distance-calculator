@@ -4,52 +4,45 @@ import (
 	"math"
 )
 
+const rEarth = 6372.8 // km
+
+func Haversine(θ float64) float64 {
+	return .5 * (1 - math.Cos(θ))
+}
+
+//Convert deg to rad
+func DegToRad(lat, lon float64) Location {
+	return Location{lat * math.Pi / 180, lon * math.Pi / 180}
+}
+
+// Convert Rad to deg
+func RadToDeg(lat, lon float64) Location {
+	return Location{lat * 180 / math.Pi, lon * 180 / math.Pi}
+}
+
+// return Hervesine distance in km
+func HaversineDist(p1, p2 Location) float64 {
+	return 2 * rEarth * math.Asin(math.Sqrt(Haversine(p2.Lat-p1.Lat)+
+		math.Cos(p1.Lat)*math.Cos(p2.Lat)*Haversine(p2.Lon-p1.Lon)))
+}
+
 func MidPoint(prevs []Location) Location {
 	var x, y, z, tot, midLon, midSquareRoot, midLat float64
 
 	for i := range prevs {
-		lat := prevs[i].Lat * math.Pi / 180
-		lon := prevs[i].Lon * math.Pi / 180
-		x += math.Cos(lat) * math.Cos(lon)
-		y += math.Cos(lat) * math.Sin(lon)
-		z += math.Sin(lat)
+		curr := DegToRad(prevs[i].Lat, prevs[i].Lon)
+		x += math.Cos(curr.Lat) * math.Cos(curr.Lon)
+		y += math.Cos(curr.Lat) * math.Sin(curr.Lon)
+		z += math.Sin(curr.Lat)
 		tot += 1.0
 	}
 
 	x = x / tot
 	y = y / tot
-	y = z / tot
-
+	z = z / tot
 	midLon = math.Atan2(y, x)
 	midSquareRoot = math.Sqrt(x*x + y*y)
 	midLat = math.Atan2(z, midSquareRoot)
 
-	curr := Location{
-		Lat: DegToRad(midLat),
-		Lon: DegToRad(midLon),
-	}
-
-	return curr
-}
-
-func DegToRad(deg float64) float64 {
-	return deg * (math.Pi / 180)
-}
-
-func Hervesine(lat1 float64, lat2 float64, lon1 float64, lon2 float64) Distance {
-	var dLat, dLon, a, c, d float64
-
-	earthRad := 6371.0
-
-	dLat = DegToRad(lat1 - lat2)
-	dLon = DegToRad(lon1 - lon2)
-	a = math.Sin(dLat/2)*math.Sin(dLat/2) + math.Cos(DegToRad(lat1))*math.Cos(DegToRad(lat2))*math.Sin(dLon/2)*math.Sin(dLon/2)
-	c = 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
-	d = earthRad * c
-
-	distance := Distance{
-		CurrDistance: d,
-	}
-
-	return distance
+	return RadToDeg(midLat, midLon)
 }
